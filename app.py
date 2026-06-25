@@ -3,6 +3,7 @@ import json
 import asyncio
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import httpx
 from openai import AsyncOpenAI
@@ -12,6 +13,12 @@ import uvicorn
 load_dotenv()
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://yehloolau-afk.github.io", "http://localhost:8000", "http://127.0.0.1:8000"],
+    allow_methods=["POST", "GET"],
+    allow_headers=["Content-Type"],
+)
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 LENS_API_KEY = os.getenv("LENS_API_KEY", "")
 deepseek = AsyncOpenAI(api_key=DEEPSEEK_API_KEY, base_url="https://api.deepseek.com")
