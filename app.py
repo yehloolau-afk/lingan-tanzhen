@@ -388,13 +388,11 @@ async def analyze(req: IdeaRequest):
 
 
 if __name__ == "__main__":
-    import threading
-    import webbrowser
-    import time
-
-    def open_browser():
-        time.sleep(1.5)
-        webbrowser.open("http://localhost:8000")
-
-    threading.Thread(target=open_browser, daemon=True).start()
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="warning")
+    port = int(os.getenv("PORT", 8000))
+    if port == 8000:
+        import threading, webbrowser, time
+        def open_browser():
+            time.sleep(1.5)
+            webbrowser.open("http://localhost:8000")
+        threading.Thread(target=open_browser, daemon=True).start()
+    uvicorn.run(app, host="0.0.0.0", port=port, log_level="warning")
