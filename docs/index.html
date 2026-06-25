@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>灵感探针 · Patent Scout</title>
+<meta name="description" content="输入一个产品想法，帮你探明这个方向有没有人先走一步。如果有，提醒你及时中止；如果还没有，帮你做成专利。">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --blue: #1677FF;
+  --blue-light: rgba(22,119,255,0.08);
+  --text: #1A1A1A;
+  --sub: #8C8C8C;
+  --border: #F0F0F0;
+  --bg: #F5F5F7;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  color: var(--text);
+  background: #FFF;
+  line-height: 1.6;
+}
+a { text-decoration: none; color: inherit; }
+
+/* ── Nav ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; }
+.nav-logo svg { width: 28px; height: 28px; }
+.nav-logo-name { font-size: 1rem; font-weight: 700; color: var(--blue); }
+.nav-logo-sub { font-size: 0.68rem; color: #BFBFBF; letter-spacing: 1px; text-transform: uppercase; }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.btn-ghost {
+  border: 1px solid #D9D9D9; border-radius: 6px;
+  padding: 6px 16px; font-size: 0.82rem; color: var(--sub);
+  transition: all 0.15s; cursor: pointer;
+}
+.btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+.btn-blue {
+  background: var(--blue); color: #FFF; border-radius: 6px;
+  padding: 7px 18px; font-size: 0.82rem; font-weight: 500;
+  transition: background 0.15s; cursor: pointer;
+}
+.btn-blue:hover { background: #4096FF; }
+
+/* ── Hero ── */
+.hero {
+  padding: 100px 40px 80px;
+  text-align: center;
+  max-width: 780px; margin: 0 auto;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue-light); color: var(--blue);
+  border-radius: 20px; padding: 4px 14px;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3px;
+  margin-bottom: 28px;
+}
+.hero h1 {
+  font-size: 3rem; font-weight: 800; line-height: 1.2;
+  letter-spacing: -1px; margin-bottom: 20px;
+}
+.hero h1 span { color: var(--blue); }
+.hero p {
+  font-size: 1.1rem; color: var(--sub); line-height: 1.8;
+  max-width: 560px; margin: 0 auto 40px;
+}
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.hero-btn-primary {
+  background: var(--blue); color: #FFF;
+  border-radius: 8px; padding: 12px 28px;
+  font-size: 0.95rem; font-weight: 600;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+}
+.hero-btn-primary:hover { background: #4096FF; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(22,119,255,0.3); }
+.hero-btn-secondary {
+  border: 1.5px solid #D9D9D9; color: var(--text);
+  border-radius: 8px; padding: 12px 28px;
+  font-size: 0.95rem; font-weight: 500;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+}
+.hero-btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+
+/* ── Radar illustration ── */
+.hero-visual {
+  margin: 60px auto 0;
+  width: 200px; height: 200px;
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.radar-ring {
+  position: absolute; border-radius: 50%;
+  border: 1.5px solid var(--blue); opacity: 0.15;
+  animation: radar-pulse 3s ease-in-out infinite;
+}
+.radar-ring:nth-child(1) { width: 200px; height: 200px; animation-delay: 0s; }
+.radar-ring:nth-child(2) { width: 140px; height: 140px; animation-delay: 0.4s; opacity: 0.25; }
+.radar-ring:nth-child(3) { width: 80px; height: 80px; animation-delay: 0.8s; opacity: 0.4; }
+.radar-center {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--blue); position: relative; z-index: 2;
+  box-shadow: 0 0 0 8px rgba(22,119,255,0.15);
+}
+.radar-beam {
+  position: absolute; width: 2px; height: 80px;
+  background: linear-gradient(to top, var(--blue), transparent);
+  transform-origin: bottom center;
+  bottom: 50%; left: 50%; margin-left: -1px;
+  animation: radar-sweep 3s linear infinite;
+}
+@keyframes radar-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.15; }
+  50% { transform: scale(1.04); opacity: 0.3; }
+}
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Section base ── */
+section { padding: 80px 40px; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700; color: var(--blue);
+  text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px;
+}
+.section-title {
+  font-size: 2rem; font-weight: 800; line-height: 1.25;
+  letter-spacing: -0.5px; margin-bottom: 16px;
+}
+.section-sub { font-size: 1rem; color: var(--sub); max-width: 520px; }
+.inner { max-width: 960px; margin: 0 auto; }
+
+/* ── How it works ── */
+.how-bg { background: var(--bg); }
+.steps {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 56px;
+}
+.step-card {
+  background: #FFF; border-radius: 12px;
+  padding: 28px 24px;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s;
+}
+.step-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--blue-light); color: var(--blue);
+  font-size: 0.8rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+.step-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+.step-card p { font-size: 0.88rem; color: var(--sub); line-height: 1.65; }
+.step-icon { font-size: 1.6rem; margin-bottom: 12px; }
+
+/* ── Features ── */
+.features-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 20px; margin-top: 56px;
+}
+.feat-card {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 28px; transition: all 0.2s;
+}
+.feat-card:hover { border-color: var(--blue); box-shadow: 0 4px 20px rgba(22,119,255,0.08); }
+.feat-card:first-child { grid-column: span 2; }
+.feat-icon { font-size: 2rem; margin-bottom: 14px; }
+.feat-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+.feat-card p { font-size: 0.88rem; color: var(--sub); line-height: 1.65; }
+.feat-tag {
+  display: inline-block; margin-top: 14px;
+  background: var(--blue-light); color: var(--blue);
+  border-radius: 4px; padding: 3px 10px; font-size: 0.72rem; font-weight: 600;
+}
+
+/* ── Data sources ── */
+.sources-bg { background: var(--bg); }
+.sources-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 48px;
+}
+.source-card {
+  background: #FFF; border-radius: 10px; padding: 20px;
+  border: 1px solid var(--border);
+}
+.source-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; }
+.source-card p { font-size: 0.82rem; color: var(--sub); }
+.source-badge {
+  display: inline-block; margin-top: 10px;
+  background: #F6FFED; color: #52C41A;
+  border-radius: 4px; padding: 2px 8px; font-size: 0.68rem; font-weight: 600;
+}
+.source-badge.req { background: #FFF7E6; color: #FA8C16; }
+
+/* ── Stack ── */
+.stack-row {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px;
+}
+.stack-pill {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 20px; padding: 6px 16px;
+  font-size: 0.82rem; color: #595959; font-weight: 500;
+}
+
+/* ── CTA banner ── */
+.cta-section {
+  background: var(--blue); padding: 80px 40px; text-align: center;
+}
+.cta-section h2 { font-size: 2rem; font-weight: 800; color: #FFF; margin-bottom: 14px; }
+.cta-section p { color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 36px; }
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #FFF; color: var(--blue);
+  border-radius: 8px; padding: 12px 28px;
+  font-size: 0.95rem; font-weight: 700;
+  transition: all 0.2s;
+}
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.82rem; color: var(--sub);
+}
+footer a { color: var(--sub); }
+footer a:hover { color: var(--blue); }
+
+@media (max-width: 700px) {
+  .hero h1 { font-size: 2rem; }
+  .steps, .sources-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .feat-card:first-child { grid-column: span 1; }
+  nav { padding: 0 20px; }
+  section { padding: 60px 20px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">
+    <svg viewBox="0 0 28 28" fill="none">
+      <circle cx="14" cy="14" r="12" stroke="#1677FF" stroke-width="0.8" opacity="0.25"/>
+      <circle cx="14" cy="14" r="8"  stroke="#1677FF" stroke-width="1"   opacity="0.45"/>
+      <circle cx="14" cy="14" r="4"  stroke="#1677FF" stroke-width="1.2" opacity="0.7"/>
+      <circle cx="14" cy="14" r="1.6" fill="#1677FF"/>
+      <line x1="14" y1="14" x2="23" y2="6" stroke="#1677FF" stroke-width="1.4" stroke-linecap="round"/>
+      <circle cx="23" cy="6" r="1.4" fill="#1677FF" opacity="0.9"/>
+    </svg>
+    <div>
+      <div class="nav-logo-name">灵感探针</div>
+      <div class="nav-logo-sub">Patent Scout</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <a href="https://github.com/yehloolau-afk/lingan-tanzhen" class="btn-ghost">GitHub</a>
+    <a href="https://github.com/yehloolau-afk/lingan-tanzhen#readme" class="btn-blue">快速启动 →</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">🔍 专利可行性检索</div>
+  <h1>你的想法，<span>有人先做了吗？</span></h1>
+  <p>输入一个产品想法，帮你探明这个方向有没有人先走一步。如果有，提醒你及时中止；如果还没有，帮你做成专利。</p>
+  <div class="hero-actions">
+    <a href="https://github.com/yehloolau-afk/lingan-tanzhen" class="hero-btn-primary">
+      ↓ 下载使用
+    </a>
+    <a href="https://github.com/yehloolau-afk/lingan-tanzhen#readme" class="hero-btn-secondary">
+      查看文档
+    </a>
+  </div>
+  <div class="hero-visual">
+    <div class="radar-ring"></div>
+    <div class="radar-ring"></div>
+    <div class="radar-ring"></div>
+    <div class="radar-center"></div>
+    <div class="radar-beam"></div>
+  </div>
+</div>
+
+<!-- How it works -->
+<section class="how-bg">
+  <div class="inner">
+    <div class="section-label">How it works</div>
+    <div class="section-title">三步，从想法到洞察</div>
+    <p class="section-sub">不需要懂专利术语，用中文描述想法就能用。</p>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-icon">💬</div>
+        <div class="step-num">01</div>
+        <h3>输入你的产品想法</h3>
+        <p>用一句中文描述你想做什么。AI 自动提取中英文检索关键词，理解技术核心。</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">🌐</div>
+        <div class="step-num">02</div>
+        <h3>并行扫描三大专利库</h3>
+        <p>同时检索中国专利（Lens.org）、美国专利（USPTO）和欧洲专利，覆盖全球主要创新市场。</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">💡</div>
+        <div class="step-num">03</div>
+        <h3>AI 生成产品方向建议</h3>
+        <p>评估创新性评分，给出 3 条差异化方向，每条附手机界面流程图，帮你看清下一步。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section>
+  <div class="inner">
+    <div class="section-label">Features</div>
+    <div class="section-title">为产品人设计，不是为律师</div>
+    <p class="section-sub">把专利检索这件专业的事，变成每个人都能做的日常决策。</p>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">🗺️</div>
+        <h3>找到了相似专利 → 告诉你切入空间</h3>
+        <p>列出最相似的 1–5 项专利，每项用大白话说清楚它在做什么、和你的想法有什么关键区别——不是专利全文，是真正有用的信息。</p>
+        <span class="feat-tag">相似专利分析</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📊</div>
+        <h3>创新性评分 1–10</h3>
+        <p>基于专利数据库现有文献，客观评估你的想法在当前市场里的差异化程度。</p>
+        <span class="feat-tag">差异化潜力</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📱</div>
+        <h3>3 个方向 × 手机界面示意</h3>
+        <p>每条建议方向都配一套完整的产品操作流程图 + 3 屏手机界面，遵循 Ant Design Mobile 规范，直接看清产品长什么样。</p>
+        <span class="feat-tag">可视化方案</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">⚡</div>
+        <h3>本地运行，隐私自控</h3>
+        <p>一行命令启动，数据不经过第三方服务器。只需配置 DeepSeek API Key。</p>
+        <span class="feat-tag">Privacy First</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Data sources -->
+<section class="sources-bg">
+  <div class="inner">
+    <div class="section-label">Data Sources</div>
+    <div class="section-title">覆盖全球主流专利局</div>
+    <p class="section-sub">优先检索中国专利，再扩展到美国和欧洲市场。</p>
+    <div class="sources-grid">
+      <div class="source-card">
+        <h4>🇨🇳 Lens.org / CNIPA</h4>
+        <p>全球 95+ 专利局，含中国国家知识产权局完整数据。</p>
+        <span class="source-badge req">需申请 API Key</span>
+      </div>
+      <div class="source-card">
+        <h4>🇺🇸 USPTO PatentsView</h4>
+        <p>美国专利全量数据，完全免费，无需注册。</p>
+        <span class="source-badge">免费</span>
+      </div>
+      <div class="source-card">
+        <h4>🤖 DeepSeek API</h4>
+        <p>关键词提取 + 相似度分析 + 报告生成，按量付费。</p>
+        <span class="source-badge req">需 API Key</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stack -->
+<section>
+  <div class="inner">
+    <div class="section-label">Tech Stack</div>
+    <div class="section-title">最小化，可自托管</div>
+    <p class="section-sub">单文件 HTML 前端，Python 后端，本地运行一行命令搞定。</p>
+    <div class="stack-row">
+      <span class="stack-pill">Python 3.10+</span>
+      <span class="stack-pill">FastAPI</span>
+      <span class="stack-pill">DeepSeek API</span>
+      <span class="stack-pill">Lens.org API</span>
+      <span class="stack-pill">USPTO PatentsView</span>
+      <span class="stack-pill">SSE Streaming</span>
+      <span class="stack-pill">Vanilla HTML / CSS / JS</span>
+      <span class="stack-pill">Ant Design Mobile</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="inner">
+    <h2>你的下一个想法值得被认真对待</h2>
+    <p>免费开源，本地运行，5 分钟上手。</p>
+    <a href="https://github.com/yehloolau-afk/lingan-tanzhen" class="cta-btn">
+      ↗ 在 GitHub 上查看
+    </a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div>灵感探针 · Patent Scout &nbsp;·&nbsp; Made by <a href="https://github.com/yehloolau-afk">@yehloolau</a></div>
+  <div>
+    <a href="https://github.com/yehloolau-afk/lingan-tanzhen">GitHub</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/yehloolau-afk">更多项目</a>
+  </div>
+</footer>
+
+</body>
+</html>
