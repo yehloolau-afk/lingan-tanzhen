@@ -345,13 +345,6 @@ textarea::placeholder { color: #C7C7CC; }
   </div>
 </div>
 
-<div id="localOnlyBanner" style="display:none;background:#FFF7E6;border-bottom:1px solid #FFD591;padding:10px 40px;font-size:0.82rem;color:#874D00;display:flex;align-items:center;gap:8px">
-  <span style="font-size:1rem">⚠️</span>
-  <span>此页面为展示用途，检索功能需在本地运行：</span>
-  <code style="background:rgba(0,0,0,0.06);border-radius:4px;padding:1px 6px;font-size:0.8rem">cd 灵感探针 &amp;&amp; python app.py</code>
-  <span>，然后访问</span>
-  <a href="http://localhost:8000" style="color:#1677FF;font-weight:600">localhost:8000</a>
-</div>
 
 <div class="page">
 
@@ -746,9 +739,6 @@ document.getElementById('ideaInput').addEventListener('keydown', e => {
   if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) startSearch();
 });
 
-if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-  document.getElementById('localOnlyBanner').style.display = 'flex';
-}
 </script>
 </body>
 </html>
