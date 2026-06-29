@@ -55,7 +55,7 @@ body {
   background: #FFF;
   border: 1.5px solid #1677FF;
   box-shadow: 0 0 0 3px rgba(22,119,255,0.08), 0 2px 8px rgba(0,0,0,0.04);
-  border-radius: 8px; padding: 16px 20px;
+  border-radius: 8px; padding: 22px 24px 16px;
   margin-bottom: 8px;
 }
 .examples { display: flex; flex-wrap: wrap; gap: 5px; }
@@ -70,7 +70,7 @@ body {
 textarea {
   width: 100%; border: none; outline: none;
   font-size: 0.98rem; font-family: inherit;
-  resize: none; min-height: 56px; max-height: 180px;
+  resize: none; min-height: 120px; max-height: 260px;
   color: #1A1A1A; background: transparent;
   line-height: 1.75; overflow-y: auto;
 }
@@ -286,6 +286,39 @@ textarea::placeholder { color: #C7C7CC; }
 
 .hidden { display: none; }
 
+/* ══ Intro section ══ */
+.intro-section { margin-bottom: 8px; }
+.intro-steps {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  margin-bottom: 8px;
+}
+.intro-step {
+  background: #FFF; border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 8px; padding: 18px 18px 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.intro-step-num {
+  font-size: 0.6rem; font-weight: 700; color: #1677FF;
+  letter-spacing: 1.5px; margin-bottom: 10px;
+}
+.intro-step-title {
+  font-size: 0.86rem; font-weight: 600; color: #1C1C1E; margin-bottom: 5px;
+}
+.intro-step-desc { font-size: 0.75rem; color: #8C8C8C; line-height: 1.6; }
+.intro-about {
+  background: #FFF; border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 8px; padding: 16px 22px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  display: flex; align-items: flex-start; gap: 18px;
+}
+.intro-about-label {
+  font-size: 0.6rem; font-weight: 700; color: #BFBFBF;
+  text-transform: uppercase; letter-spacing: 1px;
+  white-space: nowrap; margin-top: 2px; flex-shrink: 0;
+}
+.intro-about p { font-size: 0.82rem; color: #595959; line-height: 1.75; }
+.intro-about strong { color: #1C1C1E; }
+
 @media (max-width: 680px) {
   .tab-pane-mockup { display: none; }
   .tab-pane.active { display: block; }
@@ -312,6 +345,13 @@ textarea::placeholder { color: #C7C7CC; }
   </div>
 </div>
 
+<div id="localOnlyBanner" style="display:none;background:#FFF7E6;border-bottom:1px solid #FFD591;padding:10px 40px;font-size:0.82rem;color:#874D00;display:flex;align-items:center;gap:8px">
+  <span style="font-size:1rem">⚠️</span>
+  <span>此页面为展示用途，检索功能需在本地运行：</span>
+  <code style="background:rgba(0,0,0,0.06);border-radius:4px;padding:1px 6px;font-size:0.8rem">cd 灵感探针 &amp;&amp; python app.py</code>
+  <span>，然后访问</span>
+  <a href="http://localhost:8000" style="color:#1677FF;font-weight:600">localhost:8000</a>
+</div>
 
 <div class="page">
 
@@ -331,8 +371,33 @@ textarea::placeholder { color: #C7C7CC; }
     </div>
   </div>
 
+  <!-- ══ 默认介绍区 ══ -->
+  <div id="introSection" class="intro-section">
+    <div class="intro-steps">
+      <div class="intro-step">
+        <div class="intro-step-num">STEP 01</div>
+        <div class="intro-step-title">描述你的产品想法</div>
+        <div class="intro-step-desc">用一句话说清楚，不需要专业术语，AI 会自动提取检索关键词</div>
+      </div>
+      <div class="intro-step">
+        <div class="intro-step-num">STEP 02</div>
+        <div class="intro-step-title">扫描全球专利数据库</div>
+        <div class="intro-step-desc">覆盖中国、美国、欧洲三地专利，实时并行检索，通常 30 秒内完成</div>
+      </div>
+      <div class="intro-step">
+        <div class="intro-step-num">STEP 03</div>
+        <div class="intro-step-title">获取可行性报告</div>
+        <div class="intro-step-desc">创新评分 + 3 个差异化产品方向建议，每个方向附带界面示意图</div>
+      </div>
+    </div>
+    <div class="intro-about">
+      <div class="intro-about-label">关于</div>
+      <p>灵感探针面向<strong>创业者、产品经理、研究人员</strong>——输入一句中文描述，帮你探明这个方向是否已有人占坑。如果有，提醒你及时止损；如果还没有，帮你找到差异化切入点，并给出申请专利的核心建议。</p>
+    </div>
+  </div>
+
   <!-- ══ LAYER 2 · 进度条 ══ -->
-  <div class="progress-card">
+  <div class="progress-card" style="display:none">
     <div class="timeline">
       <div class="tl-step" id="s1">
         <div class="tl-name">提炼关键词</div>
@@ -358,7 +423,7 @@ textarea::placeholder { color: #C7C7CC; }
   </div>
 
   <!-- ══ LAYER 3 · 关键词 ══ -->
-  <div class="kw-card">
+  <div class="kw-card" style="display:none">
     <div class="kw-col">
       <div class="kw-label">中文检索词</div>
       <div class="chips" id="zhChips">
@@ -378,7 +443,7 @@ textarea::placeholder { color: #C7C7CC; }
   </div>
 
   <!-- ══ LAYER 4a · 差异化潜力描述 ══ -->
-  <div class="score-card" id="scoreCard">
+  <div class="score-card" id="scoreCard" style="display:none">
     <div id="scoreEmpty">
       <div style="display:flex;gap:20px;align-items:center;margin-bottom:14px">
         <div class="sk sk-block" style="width:58px;height:52px;border-radius:9px;flex-shrink:0"></div>
@@ -395,7 +460,7 @@ textarea::placeholder { color: #C7C7CC; }
   </div>
 
   <!-- ══ LAYER 4b · 建议方案（Tab 切换）══ -->
-  <div class="sug-card" id="sugCard">
+  <div class="sug-card" id="sugCard" style="display:none">
     <!-- skeleton -->
     <div id="sugEmpty" style="padding:20px 22px 22px">
       <div class="sk sk-line" style="width:28%;margin-bottom:15px"></div>
@@ -572,9 +637,35 @@ const API_BASE = window.location.hostname === 'localhost' || window.location.hos
   ? ''
   : 'https://lingan-tanzhen-production.up.railway.app';
 
+let _hasSearched = false;
+
+function revealCard(el, delayMs) {
+  setTimeout(() => {
+    el.style.display = '';
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(-10px)';
+    el.style.transition = 'opacity 0.32s ease, transform 0.32s ease';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }));
+  }, delayMs);
+}
+
 async function startSearch() {
   const idea = document.getElementById('ideaInput').value.trim();
   if (!idea) { document.getElementById('ideaInput').focus(); return; }
+
+  if (!_hasSearched) {
+    _hasSearched = true;
+    document.getElementById('introSection').style.transition = 'opacity 0.2s ease';
+    document.getElementById('introSection').style.opacity = '0';
+    setTimeout(() => document.getElementById('introSection').style.display = 'none', 200);
+    revealCard(document.querySelector('.progress-card'), 220);
+    revealCard(document.querySelector('.kw-card'), 300);
+    revealCard(document.getElementById('scoreCard'), 380);
+    revealCard(document.getElementById('sugCard'), 460);
+  }
 
   document.getElementById('searchBtn').disabled = true;
   ['s1','s2','s3','s4'].forEach(id => setStep(id, ''));
