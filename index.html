@@ -8,7 +8,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: linear-gradient(135deg, #EEF4FF 0%, #F0F7FF 30%, #E8F0FE 60%, #EDF5FF 100%);
+  background: linear-gradient(135deg, #F5F5F5 0%, #F9F9F9 30%, #F2F2F2 60%, #F6F6F6 100%);
   background-attachment: fixed;
   color: #1A1A1A;
   min-height: 100vh;
@@ -35,7 +35,7 @@ body {
   display: flex; flex-direction: column; align-items: flex-end; gap: 1px;
 }
 .logo-name {
-  font-size: 0.92rem; font-weight: 700; color: #1677FF;
+  font-size: 0.92rem; font-weight: 700; color: #1A1A1A;
   letter-spacing: 0.5px;
 }
 .logo-sub {
@@ -55,8 +55,8 @@ body {
 /* ══ LAYER 1 · Input ══ */
 .input-card {
   background: #FFF;
-  border: 1.5px solid #1677FF;
-  box-shadow: 0 0 0 3px rgba(22,119,255,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  border: 1.5px solid #1A1A1A;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
   border-radius: 8px; padding: 22px 24px 16px;
   margin-bottom: 8px;
 }
@@ -86,13 +86,13 @@ textarea::placeholder { color: #C7C7CC; }
 
 /* ── Primary button — Ant Design style ── */
 .btn-primary {
-  background: #1677FF; color: #FFF; border: none;
+  background: #1A1A1A; color: #FFF; border: none;
   border-radius: 6px; padding: 9px 20px;
   font-size: 0.84rem; font-weight: 500; cursor: pointer;
   font-family: inherit; transition: background 0.2s; white-space: nowrap;
   letter-spacing: 0;
 }
-.btn-primary:hover { background: #4096FF; }
+.btn-primary:hover { background: #444444; }
 .btn-primary:disabled { background: #D9D9D9; color: #BFBFBF; cursor: not-allowed; }
 
 /* ══ LAYER 2 · Progress timeline ══ */
@@ -115,7 +115,7 @@ textarea::placeholder { color: #C7C7CC; }
   height: 1.5px; background: #D1D1D6;
   transition: background 0.5s ease;
 }
-.tl-step.done::after { background: #1677FF; }
+.tl-step.done::after { background: #1A1A1A; }
 
 .tl-name {
   height: 22px; line-height: 22px;
@@ -131,16 +131,16 @@ textarea::placeholder { color: #C7C7CC; }
   background: #D1D1D6; border: none;
   position: relative; z-index: 1; transition: all 0.3s; flex-shrink: 0;
 }
-.tl-step.active .tl-dot { background: #1677FF; box-shadow: 0 0 0 4px rgba(22,119,255,0.18); }
-.tl-step.done   .tl-dot { background: #1677FF; }
+.tl-step.active .tl-dot { background: #1A1A1A; box-shadow: 0 0 0 4px rgba(0,0,0,0.12); }
+.tl-step.done   .tl-dot { background: #1A1A1A; }
 .tl-step.error  .tl-dot { background: #FF4D4F; }
 
 .tl-count { font-size: 0.61rem; color: #AEAEB2; margin-top: 5px; min-height: 14px; text-align: center; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 3px rgba(22,119,255,0.18); }
-  50%       { box-shadow: 0 0 0 6px rgba(22,119,255,0.08); }
+  0%, 100% { box-shadow: 0 0 0 3px rgba(0,0,0,0.12); }
+  50%       { box-shadow: 0 0 0 6px rgba(0,0,0,0.06); }
 }
 .tl-step.active .tl-dot { animation: pulse-dot 1.4s ease-in-out infinite; }
 .spinner {
@@ -177,12 +177,12 @@ textarea::placeholder { color: #C7C7CC; }
   margin-bottom: 8px; min-height: 80px;
 }
 .score-row { display: flex; align-items: center; gap: 20px; margin-bottom: 16px; }
-.score-num-big { font-size: 3rem; font-weight: 700; color: #1677FF; line-height: 1; flex-shrink: 0; letter-spacing: -1px; }
+.score-num-big { font-size: 3rem; font-weight: 700; color: #1A1A1A; line-height: 1; flex-shrink: 0; letter-spacing: -1px; }
 .score-denom   { font-size: 1rem; color: #BFBFBF; letter-spacing: 0; font-weight: 400; }
 .score-right { flex: 1; }
 .score-tag { font-size: 0.66rem; font-weight: 600; color: #8C8C8C; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 9px; }
 .bar-bg   { height: 6px; background: #F0F0F0; border-radius: 3px; overflow: hidden; }
-.bar-fill { height: 100%; background: linear-gradient(90deg, #1677FF, #4096FF); border-radius: 3px; transition: width 1s cubic-bezier(.25,.46,.45,.94); width: 0%; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, #1A1A1A, #555555); border-radius: 3px; transition: width 1s cubic-bezier(.25,.46,.45,.94); width: 0%; }
 .assessment { font-size: 0.84rem; line-height: 1.75; color: #595959; }
 .tips-box { background: #FFFBE6; border: 1px solid #FFE58F; border-radius: 6px; padding: 10px 14px; margin-top: 12px; font-size: 0.81rem; line-height: 1.65; color: #614700; }
 .tips-label { font-weight: 600; color: #D46B08; font-size: 0.68rem; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
@@ -220,8 +220,8 @@ textarea::placeholder { color: #C7C7CC; }
   transition: all 0.2s; font-family: inherit; white-space: nowrap;
   margin-bottom: -2px;
 }
-.tab-btn:hover { color: #4096FF; }
-.tab-btn.active { color: #1677FF; font-weight: 600; border-bottom-color: #1677FF; }
+.tab-btn:hover { color: #444444; }
+.tab-btn.active { color: #1A1A1A; font-weight: 600; border-bottom-color: #1A1A1A; }
 
 /* Tab pane: top text + bottom mockup */
 .tab-pane { display: none; }
@@ -353,7 +353,7 @@ textarea::placeholder { color: #C7C7CC; }
   <span>此页面为展示用途，检索功能需在本地运行：</span>
   <code style="background:rgba(0,0,0,0.06);border-radius:4px;padding:1px 6px;font-size:0.8rem">cd 灵感探针 &amp;&amp; python app.py</code>
   <span>，然后访问</span>
-  <a href="http://localhost:8000" style="color:#1677FF;font-weight:600">localhost:8000</a>
+  <a href="http://localhost:8000" style="color:#1A1A1A;font-weight:600">localhost:8000</a>
 </div>
 
 <div class="page">
@@ -379,7 +379,7 @@ textarea::placeholder { color: #C7C7CC; }
     <div class="intro-steps">
       <div class="intro-step">
         <div class="intro-step-icon" style="background:#EEF4FF">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#1677FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2a7 7 0 0 1 4 12.9V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.1A7 7 0 0 1 12 2z"/><line x1="9" y1="21" x2="15" y2="21"/><line x1="10" y1="21" x2="14" y2="21" stroke-width="1"/>
           </svg>
         </div>
