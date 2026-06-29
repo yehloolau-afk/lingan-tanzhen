@@ -328,9 +328,58 @@ textarea::placeholder { color: #C7C7CC; }
 .intro-about p { font-size: 0.8rem; color: #595959; line-height: 1.7; }
 .intro-about strong { color: #1C1C1E; }
 
-@media (max-width: 680px) {
+@media (max-width: 640px) {
+  /* Header */
+  .header { padding: 14px 0 2px; }
+  .header p { display: none; }
+  .logo-icon { width: 30px; height: 30px; }
+  .header h1 { font-size: 1rem; }
+
+  /* Page */
+  .page { padding: 12px 14px 60px; }
+
+  /* Input card */
+  .input-card { padding: 14px 14px 12px; }
+  textarea { min-height: 88px; font-size: 0.93rem; }
+
+  /* Stack search button below examples */
+  .input-footer { flex-direction: column; align-items: stretch; gap: 10px; }
+  .btn-primary { width: 100%; padding: 12px 20px; font-size: 0.9rem; text-align: center; }
+
+  /* Progress timeline */
+  .progress-card { padding: 14px 12px; }
+  .tl-name { font-size: 0.58rem; }
+  .tl-dot { width: 10px; height: 10px; }
+
+  /* Keywords: single column */
+  .kw-card { grid-template-columns: 1fr; padding: 12px 16px; gap: 0; }
+  .kw-col { padding: 0; }
+  .kw-col:first-child { border-right: none; border-bottom: 1px solid #F0F0F0; padding-bottom: 12px; margin-bottom: 12px; }
+
+  /* Intro steps: vertical stack */
+  .intro-steps { grid-template-columns: 1fr; gap: 0; }
+  .intro-arrow { transform: rotate(90deg); height: 24px; }
+  .intro-step { padding: 16px 16px 14px; }
+
+  /* Score card */
+  .score-card { padding: 16px 16px; }
+  .score-num-big { font-size: 2.4rem; }
+
+  /* Suggestion tabs */
+  .sug-card-head { padding: 12px 16px 10px; }
+  .tab-row { margin: 0 -16px; padding: 0 16px; }
+  .tab-btn { padding: 6px 10px 10px; font-size: 0.73rem; }
+  .tab-pane-text { padding: 14px 16px 12px; font-size: 0.82rem; }
+
+  /* Hide mockup iframe on mobile */
   .tab-pane-mockup { display: none; }
-  .tab-pane.active { display: block; }
+
+  /* Skeleton in sug card */
+  #sugEmpty { padding: 14px 16px 16px; }
+
+  /* Patent panes */
+  .p-pane { padding: 16px 16px; }
+  .summary-strip { padding: 12px 16px; font-size: 0.77rem; }
 }
 </style>
 </head>
