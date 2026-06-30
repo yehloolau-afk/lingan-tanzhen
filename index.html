@@ -290,6 +290,16 @@ textarea::placeholder { color: #C7C7CC; }
 
 /* ══ Intro section ══ */
 .intro-section { margin-bottom: 8px; }
+.intro-divider {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.intro-divider::before, .intro-divider::after {
+  content: ''; flex: 1; border-top: 1px dashed rgba(0,0,0,0.15);
+}
+.intro-divider span {
+  font-size: 0.7rem; color: #BFBFBF; letter-spacing: 1px; white-space: nowrap;
+}
 .intro-steps {
   display: grid; grid-template-columns: 1fr 28px 1fr 28px 1fr 28px 1fr; gap: 0;
   margin-bottom: 8px; align-items: center;
@@ -299,9 +309,8 @@ textarea::placeholder { color: #C7C7CC; }
   color: #D1D1D6; font-size: 1rem;
 }
 .intro-step {
-  background: #FFF; border: 1px solid rgba(0,0,0,0.07);
+  background: transparent; border: 1px dashed rgba(0,0,0,0.18);
   border-radius: 10px; padding: 20px 18px 18px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   display: flex; flex-direction: column; align-items: flex-start; gap: 0;
 }
 .intro-step-icon {
@@ -319,9 +328,8 @@ textarea::placeholder { color: #C7C7CC; }
 }
 .intro-step-desc { font-size: 0.74rem; color: #8C8C8C; line-height: 1.65; }
 .intro-about {
-  background: #FFF; border: 1px solid rgba(0,0,0,0.07);
+  background: transparent; border: 1px dashed rgba(0,0,0,0.18);
   border-radius: 10px; padding: 14px 22px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   display: flex; align-items: center; gap: 14px;
 }
 .intro-about-icon { font-size: 1.1rem; flex-shrink: 0; opacity: 0.7; }
@@ -425,6 +433,7 @@ textarea::placeholder { color: #C7C7CC; }
 
   <!-- ══ 默认介绍区 ══ -->
   <div id="introSection" class="intro-section">
+  <div class="intro-divider"><span>产品说明</span></div>
     <div class="intro-steps">
       <div class="intro-step">
         <div class="intro-step-icon" style="background:#EEF4FF">
