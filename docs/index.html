@@ -594,8 +594,18 @@ function setStep(id, state, count) {
 }
 
 function showTab(idx) {
-  document.querySelectorAll('.tab-btn').forEach((el, i)  => el.classList.toggle('active', i === idx));
-  document.querySelectorAll('.tab-pane').forEach((el, i) => el.classList.toggle('active', i === idx));
+  document.querySelectorAll('.tab-btn').forEach((el, i) => el.classList.toggle('active', i === idx));
+  document.querySelectorAll('.tab-pane').forEach((el, i) => {
+    el.classList.toggle('active', i === idx);
+    if (i === idx) {
+      const iframe = el.querySelector('iframe.mockup-frame');
+      if (iframe && iframe.contentDocument) {
+        const d = iframe.contentDocument;
+        const h = Math.max(d.body.scrollHeight, d.documentElement.scrollHeight);
+        if (h > 50) iframe.style.height = (h + 12) + 'px';
+      }
+    }
+  });
 }
 
 function renderMockup(html) {
