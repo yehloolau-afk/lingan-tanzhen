@@ -595,28 +595,79 @@ function setStep(id, state, count) {
 
 function showTab(idx) {
   document.querySelectorAll('.tab-btn').forEach((el, i) => el.classList.toggle('active', i === idx));
-  document.querySelectorAll('.tab-pane').forEach((el, i) => {
-    el.classList.toggle('active', i === idx);
-    if (i === idx) {
-      const iframe = el.querySelector('iframe.mockup-frame');
-      if (iframe && iframe.contentDocument) {
-        const d = iframe.contentDocument;
-        const h = Math.max(d.body.scrollHeight, d.documentElement.scrollHeight);
-        if (h > 50) iframe.style.height = (h + 12) + 'px';
-      }
-    }
-  });
+  document.querySelectorAll('.tab-pane').forEach((el, i) => el.classList.toggle('active', i === idx));
 }
 
-function renderMockup(html) {
-  if (!html) return `<div style="flex:1;display:flex;align-items:center;justify-content:center;color:#D5D5D5;font-size:0.74rem;line-height:1.7;text-align:center">暂无<br>示意图</div>`;
-  const id = 'f' + Math.random().toString(36).slice(2);
-  return `<iframe id="${id}" class="mockup-frame"
-    sandbox="allow-same-origin"
-    scrolling="no"
-    srcdoc="${html.replace(/"/g, '&quot;')}"
-    onload="var d=this.contentDocument;var h=Math.max(d.body.scrollHeight,d.documentElement.scrollHeight);this.style.height=(h+12)+'px';"
-  ></iframe>`;
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function hexRgb(h) { return parseInt(h.slice(1,3),16)+','+parseInt(h.slice(3,5),16)+','+parseInt(h.slice(5,7),16); }
+
+function renderRow(row, color) {
+  const e = esc, rgb = hexRgb(color);
+  if (row.type==='card') return (
+    `<div style="margin:8px 10px 0;background:#FFF;border-radius:8px;padding:9px 11px;box-shadow:0 1px 3px rgba(0,0,0,0.08)">` +
+    `<div style="font-size:12px;font-weight:600;color:#000;margin-bottom:2px">${e(row.title)}</div>` +
+    (row.subtitle?`<div style="font-size:10px;color:#8C8C8C;margin-bottom:3px">${e(row.subtitle)}</div>`:'') +
+    ((row.tags||[]).length?`<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">${row.tags.map(t=>`<span style="font-size:10px;background:rgba(${rgb},0.12);color:${color};border-radius:4px;padding:1px 6px">${e(t)}</span>`).join('')}</div>`:'') +
+    `</div>`);
+  if (row.type==='list') return (
+    `<div style="min-height:36px;padding:0 12px;display:flex;align-items:center;background:#FFF;border-bottom:0.5px solid #F5F5F5">` +
+    (row.icon?`<span style="font-size:13px;margin-right:7px">${row.icon}</span>`:'') +
+    `<div style="flex:1;font-size:12px;color:#000">${e(row.label)}</div>` +
+    (row.value?`<div style="font-size:11px;color:${row.badge?color:'#8C8C8C'};margin-right:3px">${e(row.value)}</div>`:'') +
+    `<div style="font-size:11px;color:#C7C7CC">›</div></div>`);
+  if (row.type==='divider') return `<div style="height:7px;background:#F5F5F5"></div>`;
+  if (row.type==='section') return `<div style="padding:8px 12px 3px;font-size:10px;color:#8C8C8C;font-weight:600">${e(row.text)}</div>`;
+  if (row.type==='chat_out') return (
+    `<div style="padding:4px 10px;display:flex;justify-content:flex-end">` +
+    `<div style="max-width:72%;background:${color};color:#FFF;border-radius:12px 12px 2px 12px;padding:6px 9px;font-size:11px;line-height:1.4">${e(row.text)}</div></div>`);
+  if (row.type==='chat_in') return (
+    `<div style="padding:4px 10px;display:flex;justify-content:flex-start">` +
+    `<div style="max-width:72%;background:#FFF;color:#000;border-radius:12px 12px 12px 2px;padding:6px 9px;font-size:11px;line-height:1.4">${e(row.text)}</div></div>`);
+  if (row.type==='tag_row') return (
+    `<div style="padding:7px 10px;display:flex;gap:5px;flex-wrap:wrap">` +
+    (row.tags||[]).map(t=>`<span style="font-size:10px;background:rgba(${rgb},0.12);color:${color};border-radius:4px;padding:2px 7px;font-weight:500">${e(t)}</span>`).join('') +
+    `</div>`);
+  return '';
+}
+
+function renderPhone(screen) {
+  const color = screen.color || '#1677FF';
+  const rows = (screen.rows||[]).map(r=>renderRow(r,color)).join('');
+  const hasTab = screen.tabbar && screen.tabbar.length;
+  const tabbar = hasTab ? (
+    `<div style="height:44px;flex-shrink:0;background:#FFF;border-top:0.5px solid #F0F0F0;display:flex">` +
+    screen.tabbar.map(t=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font-size:15px">${t.icon||''}</div><div style="font-size:9px;color:${t.active?color:'#8C8C8C'}">${esc(t.label||'')}</div></div>`).join('') +
+    `</div>`) : '';
+  const button = (!hasTab && screen.button) ? (
+    `<div style="flex-shrink:0;padding:0 14px 12px">` +
+    `<div style="height:40px;background:${color};border-radius:10px;display:flex;align-items:center;justify-content:center;color:#FFF;font-size:13px;font-weight:600">${esc(screen.button)}</div></div>`) : '';
+  return (
+    `<div style="position:relative;width:300px;flex-shrink:0;border-radius:10px;overflow:hidden;border:2px solid #1A1A1A;box-sizing:border-box">` +
+    `<div style="width:100%;height:641px;overflow:hidden;display:flex;flex-direction:column;background:#F2F2F7;box-sizing:border-box">` +
+    `<div style="height:48px;flex-shrink:0;padding:0 14px;display:flex;align-items:center;justify-content:space-between;background:#FFF;border-bottom:0.5px solid #F0F0F0;box-sizing:border-box">` +
+    `<div style="font-size:13px;color:${color};font-weight:500">‹ 返回</div>` +
+    `<div style="font-size:13px;font-weight:700;color:#000">${esc(screen.title||'')}</div>` +
+    `<div style="font-size:12px;color:#C7C7CC">···</div></div>` +
+    `<div style="flex:1;overflow:hidden">${rows}</div>` +
+    button + tabbar +
+    `</div></div>`);
+}
+
+function renderMockup(data) {
+  if (!data || !data.screens || !data.screens.length)
+    return `<div style="padding:40px;text-align:center;color:#D5D5D5;font-size:0.74rem;line-height:1.7">暂无<br>示意图</div>`;
+  const parts = [];
+  data.screens.forEach((s,i) => {
+    if (i>0) parts.push(`<div style="align-self:center;font-size:20px;color:#C7C7CC;flex-shrink:0;padding-bottom:55px">→</div>`);
+    parts.push(
+      `<div style="display:flex;flex-direction:column;flex-shrink:0">` +
+      `<div style="text-align:center;font-size:10px;font-weight:700;color:#8E8E93;letter-spacing:0.5px;margin-bottom:8px">${esc(s.label||'STEP 0'+(i+1))}</div>` +
+      renderPhone(s) + `</div>`);
+  });
+  return (
+    `<div style="width:100%;background:#F5F5F7;padding:20px 0 32px;overflow-x:auto;-webkit-overflow-scrolling:touch">` +
+    `<div style="display:flex;align-items:flex-start;gap:0;width:max-content;min-width:100%;padding:0 20px;box-sizing:border-box">` +
+    parts.join('') + `</div></div>`);
 }
 
 function renderNovel(data) {
@@ -649,8 +700,8 @@ function renderNovel(data) {
   html += `</div></div>`;
 
   sugs.forEach((s, i) => {
-    const text    = typeof s === 'string' ? s : (s.text || '');
-    const mockHtml = typeof s === 'object' ? (s.mockup_html || '') : '';
+    const text     = typeof s === 'string' ? s : (s.text || '');
+    const mockData = typeof s === 'object' ? (s.mockup_data || null) : null;
     html += `<div class="tab-pane ${i === 0 ? 'active' : ''}">
       <div class="tab-pane-text">
         <div class="tab-pane-label">方向 ${labels[i]}</div>
@@ -658,7 +709,7 @@ function renderNovel(data) {
       </div>
       <div class="tab-pane-mockup">
         <div class="tab-pane-mockup-label">方案示意图</div>
-        ${renderMockup(mockHtml)}
+        ${renderMockup(mockData)}
       </div>
     </div>`;
   });
