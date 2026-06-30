@@ -213,7 +213,7 @@ MOCKUP_SPEC = (
     "每屏层次（高度分配，总计641px）：\n"
     "① 导航栏：height:52px; flex-shrink:0; padding:0 20px; display:flex; align-items:center; justify-content:space-between;\n"
     "   background:#FFF; border-bottom:0.5px solid #F0F0F0;\n"
-    "   中间标题font-size:17px font-weight:700 color:#000; 左侧'‹ 返回' font-size:16px color:主色\n"
+    "   中间标题font-size:14px font-weight:700 color:#000; 左侧'‹ 返回' font-size:13px color:主色\n"
     "② 内容区：flex:1（自动填充剩余高度）；overflow:hidden\n"
     "   卡片间距padding:14px 18px; 卡片font-size:15px; 列表标题font-size:15px; 辅助文字font-size:13px\n"
     "③ 底部主按钮（若有）：height:54px; flex-shrink:0; margin:0 18px 16px; border-radius:14px; font-size:17px font-weight:600\n"
