@@ -306,7 +306,7 @@ async def analyze_results(idea: str, cn: list, intl: list) -> dict:
 
     resp = await deepseek.chat.completions.create(
         model="deepseek-chat",
-        max_tokens=2000,
+        max_tokens=3500,
         messages=[{"role": "user", "content": prompt}]
     )
     return parse_json_safe(resp.choices[0].message.content)
@@ -373,7 +373,11 @@ async def analyze(req: IdeaRequest):
 
             n = report.get("novel_analysis") or {}
             sugs = n.get("suggestions") or []
-            if sugs and report.get("status") == "novel":
+            # 保底：确保始终有 3 个方向
+            while len(sugs) < 3:
+                sugs.append({"text": f"方向{'ABC'[len(sugs)]}：AI 生成内容暂缺，请重新搜索。"})
+            n["suggestions"] = sugs
+            if report.get("status") == "novel":
                 labels = ["A", "B", "C", "D", "E"]
                 yield sse({"step": "mockups", "message": f"正在生成 {len(sugs)} 个方案示意图..."})
                 mockup_htmls = await asyncio.gather(*[
