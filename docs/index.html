@@ -289,10 +289,10 @@ textarea::placeholder { color: #C7C7CC; }
 .hidden { display: none; }
 
 /* ══ Intro section ══ */
-.intro-section { margin-bottom: 8px; margin-top: 32px; }
+.intro-section { margin-bottom: 8px; }
 .intro-divider {
   display: flex; align-items: center; gap: 10px;
-  margin-bottom: 14px;
+  margin-top: 24px; margin-bottom: 24px;
 }
 .intro-divider::before, .intro-divider::after {
   content: ''; flex: 1; border-top: 1px dashed rgba(0,0,0,0.15);
@@ -424,9 +424,10 @@ textarea::placeholder { color: #C7C7CC; }
     </div>
   </div>
 
+  <div class="intro-divider"><span>产品说明</span></div>
+
   <!-- ══ 默认介绍区 ══ -->
   <div id="introSection" class="intro-section">
-  <div class="intro-divider"><span>产品说明</span></div>
     <div class="intro-steps">
       <div class="intro-step">
         <div class="intro-step-icon" style="background:#EEF4FF">
